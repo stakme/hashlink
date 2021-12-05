@@ -31,9 +31,6 @@ fn split_extension(file_path: String) -> (String, Option<String>) {
     let mut i = l;
     for c in file_path.chars().rev() {
         if c == '.' {
-            if i == l {
-                return (file_path, None);
-            }
             break;
         }
         if c == '/' {
@@ -41,7 +38,7 @@ fn split_extension(file_path: String) -> (String, Option<String>) {
         }
         i -= 1;
     }
-    if i < 2 {
+    if i == l || i < 2 {
         return (file_path, None);
     }
     if file_path.chars().nth(i - 2).unwrap() == '/' {
@@ -153,5 +150,12 @@ mod tests {
                 ".test.919db07caab34978b98cc5c9b85ec315a6143d8550c0d7903fa01116e0843525.png"
             ),
         );
+
+        // empty secret
+        assert_eq!(
+            encrypt("".to_string(), "dev/src/main.rs".to_string()),
+            "dev/src/main.908ead2016a3c13dc55e410aeb6a80fb525256d56d7c2e27d017a5a866899f68.rs"
+                .to_string(),
+        )
     }
 }

@@ -1,12 +1,9 @@
-use std::path::PathBuf;
+use std::env;
 use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "hashlink")]
 struct Opt {
-    #[structopt(short, long)]
-    secret: String,
-
     #[structopt()]
     path: String,
 }
@@ -14,7 +11,7 @@ struct Opt {
 fn main() -> Result<(), ()> {
     let opt = Opt::from_args();
 
-    println!("{}", hashlink::encrypt::encrypt(opt.secret, opt.path));
-
+    let secret: String = env::var("HASHLINK_SECRET_KEY").unwrap_or(String::new());
+    println!("{}", hashlink::encrypt::encrypt(secret, opt.path));
     Ok(())
 }
