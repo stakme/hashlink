@@ -69,6 +69,10 @@ mod tests {
             join_path(String::from("1234567"), String::from("/hoge/test.png")),
             String::from("1234567/hoge/test.png")
         );
+        assert_eq!(
+            join_path(String::from("1234567"), String::from("./hoge/test.png")),
+            String::from("1234567/./hoge/test.png")
+        );
     }
 
     #[test]
